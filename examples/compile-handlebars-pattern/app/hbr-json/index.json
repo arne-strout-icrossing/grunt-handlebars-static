@@ -1,5 +1,5 @@
 {
-    "title":"Handlebars Test",
-    "header":"Testing Handlebars Static Render",
+    "title":"Testing | grunt-handlebars-static | Created by Arne Strout",
+    "header":"Handlebars HTML Rendering",
     "body":"This is content on a webpage statically rendered from a JSON file"
 }

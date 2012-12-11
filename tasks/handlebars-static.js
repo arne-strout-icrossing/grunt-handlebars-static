@@ -44,7 +44,7 @@
     var fileset=grunt.file.expandFiles(this.data.files);
     grunt.log.write("Found "+fileset.length+" templates to process.\n");
     for(i=0;i<fileset.length;i++){
-      grunt.log.write('Processing template:'+fileset[i]);
+      grunt.log.write('Processing template:'+fileset[i]+"\n");
       internalJSON=false;
       n=fileset[i].substr(fileset[i].lastIndexOf('/')+1).split('.')[0]; // just the filename
       p=fileset[i].substr(0,fileset[i].lastIndexOf('/')+1); // just the path
@@ -58,9 +58,9 @@
         ci=tpl.indexOf('{{!',ci+1);
         cu=tpl.indexOf('!}}',cu);
         if(ci>-1 && cu>-1){
-          cn=tpl.indexOf('json:',ci);
+          cn=tpl.indexOf('context:',ci);
           if(cn>-1){
-            cn+=5;
+            cn+=8;
             str=tpl.substr(cn,cu-cn);
             obj=JSON.parse(str);
             internalJSON=true;
@@ -78,11 +78,13 @@
       process.chdir(cwd);
 
       grunt.log.write('Rendering template "'+n+'" to '+out+"...\n");
+      grunt.log.write("Context: "+JSON.stringify(obj)+"\n");
       c=grunt.helper('render-handlebars-template', {
         template: fileset[i],
         output: out,
         templateData: obj
       });
+
       grunt.file.write(out,c);
     }
   });
@@ -96,7 +98,7 @@ function processUnderscore(data){
 }
 
 function processDirectives(data){
-  var toProcess = ['config', 'json'];
+  var toProcess = ['config', 'context'];
   data = grunt.utils.recurse(data, function(value) {
     if (typeof value !== 'string') { return value; }
     var parts = grunt.task.getDirectiveParts(value) || [];
@@ -108,6 +110,11 @@ function processDirectives(data){
   // ==========================================================================
   // HELPERS
   // ==========================================================================
+  // Had to edit the "json" directive for use with handlebars for live reload
+  grunt.registerHelper('context',function(filepath){
+    return grunt.file.readJSON(filepath);
+  });
+
   grunt.registerHelper('compile-partial',function(data){
     if(data){
       try{
@@ -125,7 +132,7 @@ function processDirectives(data){
         grunt.log.write("Error:[ "+e+" ] \n");
       }
     }
-    grunt.log.write("No data for compile partial call.");
+    grunt.log.write("No data for compile partial call.\n");
     return null;
   });
 
@@ -134,11 +141,7 @@ function processDirectives(data){
       var handlebars = require('handlebars');
       var template = grunt.file.read(data.template);
       var compiledTemplate = handlebars.compile(template);
-      var html = '';
-
-      html += compiledTemplate(data.templateData);
-
-      return html;
+      return compiledTemplate(data.templateData);
     }
   });
 };

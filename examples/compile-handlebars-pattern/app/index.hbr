@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 {{! *** Handlebars Context Inline Configuration **** }}
 {{! 
-    json:{
-        "page":"<json:hbr-json/index.json>",
-        "topnav":"<json:common/hbr-json/topnav.json>"
+    context:{
+        "page":"<context:hbr-json/index.json>",
+        "topnav":"<context:common/hbr-json/topnav.json>"
     }
 !}}
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->

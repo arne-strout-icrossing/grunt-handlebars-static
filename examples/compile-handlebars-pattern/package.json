@@ -9,6 +9,8 @@
 		"handlebars":"~1.0.7",
 		"grunt-sass":">= 0.0.1",
 		"grunt-clean":">= 0.0.1",
-		"grunt-contrib-requirejs":">=0.0.1"
+		"grunt-contrib-requirejs":">=0.0.1",
+		"grunt-open":">= 0.1.0",
+		"grunt-reload":">= 0.0.1"
 	}
 }
