@@ -1,12 +1,14 @@
 {
 	"hbrfiles":"app/**/*.hbr",
 	"hbrpartials":"app/**/*.hbt",
-	"hbrwatch":[
-		"app/**/hbr-json/*.json",
-		"app/**/*.hbr",
-		"app/**/*.hbt"
-	],
 	"hbrtemplates":"hbr-json/*.json",
 	"srcpath":"app/",
-	"distpath":"dist/"
+	"distpath":"dist/",
+	"dependencies":{
+		"grunt":"~0.3.16",
+		"handlebars":"~1.0.7",
+		"grunt-sass":">= 0.0.1",
+		"grunt-clean":">= 0.0.1",
+		"grunt-contrib-requirejs":">=0.0.1"
+	}
 }

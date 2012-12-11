@@ -13,7 +13,7 @@
   // ==========================================================================
 
   grunt.registerMultiTask('handlebars-static', 'Compile static HTML from handlebars templates and JSON', function() {
-    grunt.log.write('Compiling static HTML from handlebars templates...');
+    grunt.log.write('Compiling static HTML from handlebars templates...'+"\n");
 
     this.data.files=grunt.template.process(this.data.files);
     this.data.withDir=grunt.template.process(this.data.withDir);
@@ -26,16 +26,25 @@
     // PREPROCESS, CREATE LIST OF PARTIALS (.HBT)
     parts=grunt.file.expandFiles(this.data.partials);
 
+    grunt.log.write("Found "+parts.length+" Partials.\n");
     for(i=0;i<parts.length;i++){
       n=parts[i].substr(parts[i].lastIndexOf('/')+1).split('.')[0]; // just the filename
       p=parts[i].substr(0,parts[i].lastIndexOf('/')+1);
-      grunt.helper('compile-handlebars-partial',{template:parts[i],name:p.split(this.data.replaceDir).join('').split('/').join('_')+n});
+      grunt.helper('compile-partial',
+        {
+          template: parts[i],
+          name: p.split(this.data.replaceDir).join('').split('/').join('_')+n
+        }
+      );
     }
+    grunt.log.write("Finished compiling partials.");
 
     // PROCESS, ITERATE THROUGH TEMPLATES (.HBR)
     var internalJSON=false;
     var fileset=grunt.file.expandFiles(this.data.files);
+    grunt.log.write("Found "+fileset.length+" templates to process.\n");
     for(i=0;i<fileset.length;i++){
+      grunt.log.write('Processing template:'+fileset[i]);
       internalJSON=false;
       n=fileset[i].substr(fileset[i].lastIndexOf('/')+1).split('.')[0]; // just the filename
       p=fileset[i].substr(0,fileset[i].lastIndexOf('/')+1); // just the path
@@ -59,7 +68,9 @@
         }
       }
       // If no embedded object, look for JSON file with the same name
-      if(!internalJSON)obj=grunt.file.readJSON(p+this.data.data.split('*').join(n));
+      if(!internalJSON){
+        obj=grunt.file.readJSON(p+this.data.data.split('*').join(n));
+      }
 
       var cwd=process.cwd();
       process.chdir(p);
@@ -97,13 +108,25 @@ function processDirectives(data){
   // ==========================================================================
   // HELPERS
   // ==========================================================================
-  grunt.registerHelper('compile-handlebars-partial',function(data){
+  grunt.registerHelper('compile-partial',function(data){
     if(data){
-      grunt.log.write("Compiling partial:"+data.name+"\n");
-      var handlebars = require('handlebars');
-      var template=grunt.file.read(data.template);
-      handlebars.registerPartial(data.name,handlebars.compile(template));
+      try{
+        grunt.log.write("Compiling partial:"+data.name+"\n");
+        var handlebars = require('handlebars');
+        grunt.log.write("Require successful.\n");
+        var template=grunt.file.read(data.template);
+        grunt.log.write("File read.\n");
+        var ct=handlebars.compile(template);
+        grunt.log.write("HBT compiled.\n");
+        handlebars.registerPartial(data.name,ct);
+        grunt.log.write("Partial registered.\n");
+        return ct;
+      }catch (e){
+        grunt.log.write("Error:[ "+e+" ] \n");
+      }
     }
+    grunt.log.write("No data for compile partial call.");
+    return null;
   });
 
   grunt.registerHelper('render-handlebars-template', function(data) {

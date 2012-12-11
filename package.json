@@ -32,6 +32,9 @@
   "devDependencies": {
     "grunt": "~0.3.16"
   },
+  "dependencies":{
+    "handlebars":"~1.0.7"
+  },
   "keywords": [
     "gruntplugin"
   ]

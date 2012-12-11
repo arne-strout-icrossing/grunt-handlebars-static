@@ -22,6 +22,7 @@ module.exports = function(grunt) {
         noarg: true,
         sub: true,
         undef: true,
+        strict: false,
         boss: true,
         eqnull: true,
         node: true,
