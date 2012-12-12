@@ -84,7 +84,7 @@ You can specify a context for the partial per usual Handlebars syntax:
 Feel free to drop me a message if you see anything that you might find problematic or would like to see as a feature (but be considerate please) Thanks!
 
 ## Release History
-0.0.1 - Initial release, still somewhat alpha, but growing quickly.
+0.1.1 - Initial release, still somewhat alpha, but growing quickly.
 
 ## License
 Copyright (c) 2012 Arne G Strout

@@ -1,7 +1,7 @@
 {
   "name": "grunt-handlebars-static",
   "description": "Generate static HTML from handlebars templates as a part of the build process with this highly configurable plugin for Grunt.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/icagstrout/grunt-handlebars-static",
   "author": {
     "name": "Arne G Strout",
